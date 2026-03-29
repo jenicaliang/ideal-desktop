@@ -1,0 +1,49 @@
+:root {
+    /* Desktop OS */
+    --teal-deep: #1a4a5c;
+    --teal-bright: #00FFE0;
+    --green: #7FFF00;
+    --magenta: #FF00FF;
+    --purple: #6F21F9;
+    --red: #FF0000;
+  
+    /* Surfaces */
+    --grey: #808080;
+    --grey-light: #C0C0C0;
+    --black: #000000;
+    --white: #FFFFFF;
+    --yellow: #FFE44D;
+  
+    /* OS Typography */
+    --font-os: 'Arial', sans-serif;
+    --font-mono: 'Courier New', monospace;
+  
+    /* IDEAL (untouched) */
+    --ideal-cream: #f5f3ef;
+    --ideal-ink: #1e1e1e;
+    --ideal-red: #b04a2f;
+    --ideal-grey: #9a9690;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: var(--font-os);
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-10%); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
