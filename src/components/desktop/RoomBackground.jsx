@@ -6,7 +6,7 @@ export default function RoomBackground() {
         zIndex: 0,
       }}>
         <img
-          src="/src/assets/surveillance.png"
+          src="/surveillance.png"
           alt=""
           style={{
             width: '100%',
