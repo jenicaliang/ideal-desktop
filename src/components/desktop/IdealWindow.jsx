@@ -5,8 +5,12 @@ import EnvironmentPage from '../ideal/EnvironmentPage'
 import UncertaintyPage from '../ideal/UncertaintyPage'
 import InferencePage from '../ideal/InferencePage'
 import PitchPage from '../ideal/PitchPage'
+import ProfilePage from '../ideal/ProfilePage'
+import GoalsPage from '../ideal/GoalsPage'
+import EndpointsPage from '../ideal/EndpointsPage'
+import SocialProofPage from '../ideal/SocialProofPage'
 
-export default function IdealWindow({ onMinimize, onClose, onReachUncertainty, isMinimized, zIndex, onFocus, onOpenFolder, onDownloadCatalog, onThemeChange, chromeColor, chromeBorder }) {
+export default function IdealWindow({ onMinimize, onClose, onReachUncertainty, isMinimized, zIndex, onFocus, onOpenFolder, onDownloadCatalog, onThemeChange, chromeColor, chromeBorder, onGoalsMount, goalScorerOpened, onEndpointsMount }) {
   const [pos, setPos] = useState(null)
   const [phase, setPhase] = useState('mitosis')
   const [showCloseWarning, setShowCloseWarning] = useState(false)
@@ -175,8 +179,31 @@ export default function IdealWindow({ onMinimize, onClose, onReachUncertainty, i
             <PitchPage
               onDownloadCatalog={onDownloadCatalog}
               onThemeChange={onThemeChange}
+              onProceed={() => setPhase('profile')}
             />
           )}
+          {phase === 'profile' && (
+            <ProfilePage onProceed={() => setPhase('goals')} />
+          )}
+          {phase === 'goals' && (
+            <GoalsPage
+              onMount={onGoalsMount}
+              goalScorerOpened={goalScorerOpened}
+              onProceed={() => setPhase('endpoints')}
+            />
+          )}
+          {phase === 'endpoints' && (
+            <EndpointsPage
+              onMount={onEndpointsMount}
+              onProceed={() => setPhase('proof')}
+            />
+          )}
+          {phase === 'proof' && (
+  <SocialProofPage
+    onProceed={() => setPhase('sampledays')}
+    onBack={() => setPhase('endpoints')}
+  />
+)}
         </div>
       </div>
 

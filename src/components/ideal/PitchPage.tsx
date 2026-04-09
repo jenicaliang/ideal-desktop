@@ -118,9 +118,10 @@ function Connector({ visible }: { visible: boolean }) {
   )
 }
 
-export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
+export default function PitchPage({ onDownloadCatalog, onThemeChange, onProceed }: {
   onDownloadCatalog: () => void
   onThemeChange: () => void
+  onProceed: () => void
 }) {
   const [splashPhase, setSplashPhase] = useState<'light' | 'dark' | 'done'>('light')
   const [presentingText, setPresentingText] = useState("")
@@ -129,8 +130,8 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
   const [textVisible, setTextVisible] = useState(false)
   const [visibleSteps, setVisibleSteps] = useState<number[]>([])
   const [btnVisible, setBtnVisible] = useState(false)
+  const [catalogDownloaded, setCatalogDownloaded] = useState(false)
 
-  // Phase 1 — splash typewriter
   useEffect(() => {
     const PRES = "Presenting..."
     const IDEAL = "IDEAL"
@@ -161,13 +162,9 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
       }
     }, 150)
 
-    return () => {
-      clearInterval(t1)
-      if (t2) clearInterval(t2)
-    }
+    return () => { clearInterval(t1); if (t2) clearInterval(t2) }
   }, [])
 
-  // Phase 2 — content animations
   useEffect(() => {
     if (splashPhase !== 'done') return
     const stepTimers: ReturnType<typeof setTimeout>[] = []
@@ -197,54 +194,35 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
 
     return (
       <div style={{
-        width: "100%", height: "100%",
-        background: bg,
+        width: "100%", height: "100%", background: bg,
         display: "flex", alignItems: "center", justifyContent: "center",
-        transition: "background 0.6s ease",
-        overflow: "hidden",
+        transition: "background 0.6s ease", overflow: "hidden",
       }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
           <p style={{
-            fontFamily: css("--mono"),
-            fontSize: css("--size-label"),
-            fontWeight: 400,
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            color: inkColor,
-            margin: "0 0 4px 0",
-            lineHeight: 1,
-            transition: "color 0.6s ease",
-            minHeight: "1em",
+            fontFamily: css("--mono"), fontSize: css("--size-label"), fontWeight: 400,
+            letterSpacing: "0.25em", textTransform: "uppercase", color: inkColor,
+            margin: "0 0 4px 0", lineHeight: 1, transition: "color 0.6s ease", minHeight: "1em",
           }}>
             {presentingText}
             {!splashDone && idealText.length === 0 && presentingText.length > 0 && (
               <span style={{
-                display: "inline-block", width: "0.05em", height: "0.85em",
-                background: inkColor,
-                marginLeft: 2, verticalAlign: "middle",
-                animation: "blink 0.6s step-end infinite",
+                display: "inline-block", width: "0.05em", height: "0.85em", background: inkColor,
+                marginLeft: 2, verticalAlign: "middle", animation: "blink 0.6s step-end infinite",
                 transition: "background 0.6s ease",
               }} />
             )}
           </p>
           <h1 style={{
-            fontFamily: css("--mono"),
-            fontSize: "clamp(48px, 7vw, 96px)",
-            fontWeight: 400,
-            color: redColor,
-            letterSpacing: "-0.02em",
-            lineHeight: 1,
-            margin: 0,
-            minHeight: "1.1em",
-            transition: "color 0.6s ease",
+            fontFamily: css("--mono"), fontSize: "clamp(48px, 7vw, 96px)", fontWeight: 400,
+            color: redColor, letterSpacing: "-0.02em", lineHeight: 1, margin: 0,
+            minHeight: "1.1em", transition: "color 0.6s ease",
           }}>
             {idealText}
             {!splashDone && idealText.length > 0 && (
               <span style={{
-                display: "inline-block", width: "0.05em", height: "0.85em",
-                background: redColor,
-                marginLeft: 4, verticalAlign: "middle",
-                animation: "blink 0.6s step-end infinite",
+                display: "inline-block", width: "0.05em", height: "0.85em", background: redColor,
+                marginLeft: 4, verticalAlign: "middle", animation: "blink 0.6s step-end infinite",
                 transition: "background 0.6s ease",
               }} />
             )}
@@ -258,13 +236,10 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
   // ── CONTENT PAGE ──
   return (
     <div style={{
-      width: "100%", height: "100%",
-      background: DARK_BG,
-      display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center",
+      width: "100%", height: "100%", background: DARK_BG,
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       overflow: "hidden", boxSizing: "border-box",
-      padding: `${css("--space-7")} ${css("--space-5")}`,
-      position: "relative",
+      padding: `${css("--space-7")} ${css("--space-5")}`, position: "relative",
     }}>
       <div style={{
         display: "flex", flexDirection: "column", alignItems: "flex-start",
@@ -278,33 +253,22 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
           transition: "opacity 0.6s ease, transform 0.6s ease",
         }}>
           <p style={{
-            fontFamily: css("--sans"),
-            fontSize: css("--size-body"),
-            fontWeight: 300,
-            color: DARK_INK,
-            lineHeight: css("--lh-body"),
+            fontFamily: css("--sans"), fontSize: css("--size-body"), fontWeight: 300,
+            color: DARK_INK, lineHeight: css("--lh-body"),
             margin: `0 0 ${css("--space-2")} 0`,
-            display: "flex",
-            alignItems: "flex-end",
-            flexWrap: "wrap",
-            gap: "0.3em",
+            display: "flex", alignItems: "flex-end", flexWrap: "wrap", gap: "0.3em",
           }}>
             <span style={{
-              fontFamily: css("--mono"),
-              fontSize: css("--size-headline-red"),
-              fontWeight: 400,
-              color: DARK_RED,
-              letterSpacing: "-0.02em",
-              lineHeight: 1,
+              fontFamily: css("--mono"), fontSize: css("--size-headline-red"), fontWeight: 400,
+              color: DARK_RED, letterSpacing: "-0.02em", lineHeight: 1,
             }}>
               IDEAL
             </span>
             <span>is a service that uses your unique datafied identity to determine the most statistically likely path to achieving your goals.</span>
           </p>
           <p style={{
-            fontFamily: css("--mono"), fontSize: css("--size-label"),
-            fontWeight: 400, letterSpacing: "0.25em", textTransform: "uppercase",
-            color: DARK_MID, margin: 0,
+            fontFamily: css("--mono"), fontSize: css("--size-label"), fontWeight: 400,
+            letterSpacing: "0.25em", textTransform: "uppercase", color: DARK_MID, margin: 0,
           }}>
             Here's how it works.
           </p>
@@ -327,9 +291,8 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
                 }}>
                   <PixelDigit digit={step.n} pixelSize={9} color={DARK_INK} animate={isVisible} delay={80} />
                   <p style={{
-                    fontFamily: css("--mono"), fontSize: css("--size-step-label"),
-                    fontWeight: 400, letterSpacing: "0.08em",
-                    color: DARK_INK, textAlign: "center", lineHeight: 1.6, margin: 0,
+                    fontFamily: css("--mono"), fontSize: css("--size-step-label"), fontWeight: 400,
+                    letterSpacing: "0.08em", color: DARK_INK, textAlign: "center", lineHeight: 1.6, margin: 0,
                   }}>
                     {step.label}
                   </p>
@@ -344,15 +307,28 @@ export default function PitchPage({ onDownloadCatalog, onThemeChange }: {
           })}
         </div>
 
-        {/* Button */}
+        {/* Buttons — Download left, Continue right */}
         <div style={{
           opacity: btnVisible ? 1 : 0,
           transform: btnVisible ? "translateY(0)" : "translateY(8px)",
           transition: "opacity 0.5s ease, transform 0.5s ease",
-          width: "100%", display: "flex", justifyContent: "center",
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}>
-          <PixelButton onClick={onDownloadCatalog}>Download Catalog</PixelButton>
+          <PixelButton onClick={() => { onDownloadCatalog(); setCatalogDownloaded(true) }}>
+            Download Catalog
+          </PixelButton>
+          <div style={{
+            opacity: catalogDownloaded ? 1 : 0,
+            transition: "opacity 0.5s ease 0.3s",
+            pointerEvents: catalogDownloaded ? "auto" : "none",
+          }}>
+            <PixelButton onClick={onProceed}>{"Continue >"}</PixelButton>
+          </div>
         </div>
+
       </div>
       <style>{`@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }`}</style>
     </div>

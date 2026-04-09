@@ -1,4 +1,3 @@
-import { a } from "framer-motion/client"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 
@@ -98,20 +97,20 @@ const SPAWN_ZONES: {
   ground: { x: number }
   platform: { x: number; platformY?: number }
 }[] = [
-  { ground: { x: 200 }, platform: { x: 200 } },
-  { ground: { x: 470 }, platform: { x: 580, platformY: 3 * BLOCK_SIZE } },
-  { ground: { x: 700 }, platform: { x: 820, platformY: 2 * BLOCK_SIZE } },
-  { ground: { x: 960 }, platform: { x: 1050, platformY: 4 * BLOCK_SIZE } },
-  { ground: { x: 1390 }, platform: { x: 1280, platformY: 2 * BLOCK_SIZE } },
-  { ground: { x: 1640 }, platform: { x: 1520, platformY: 3 * BLOCK_SIZE } },
-  { ground: { x: 1900 }, platform: { x: 1760, platformY: 3 * BLOCK_SIZE } },
-]
+    { ground: { x: 200 }, platform: { x: 200 } },
+    { ground: { x: 470 }, platform: { x: 580, platformY: 3 * BLOCK_SIZE } },
+    { ground: { x: 700 }, platform: { x: 820, platformY: 2 * BLOCK_SIZE } },
+    { ground: { x: 960 }, platform: { x: 1050, platformY: 4 * BLOCK_SIZE } },
+    { ground: { x: 1390 }, platform: { x: 1280, platformY: 2 * BLOCK_SIZE } },
+    { ground: { x: 1640 }, platform: { x: 1520, platformY: 3 * BLOCK_SIZE } },
+    { ground: { x: 1900 }, platform: { x: 1760, platformY: 3 * BLOCK_SIZE } },
+  ]
 
 function shuffled<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
+      ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
 }
@@ -127,14 +126,14 @@ const TOOL_DEFINITIONS: {
   firstUsed: string
   sprite: string
 }[] = [
-  { id: "astrology", label: "Astrology", description: "Humanity's earliest attempt to solve uncertainty, by predicting fate from the stars.", firstUsed: "Developed: c. 3000 BCE", sprite: "/sprites/astrology.png" },
-  { id: "receipts", label: "Receipts", description: "Physical trails turned the uncertainty of memory into hard evidence.", firstUsed: "Early receipts: c. 2050 BCE", sprite: "/sprites/receipts.png" },
-  { id: "contracts", label: "Contracts", description: "By binding the future with words, contracts attempted to eliminate uncertainty from human agreements.", firstUsed: "Contracts: c. 1750 BCE", sprite: "/sprites/contracts.png" },
-  { id: "maps", label: "Maps", description: "We began charting the unknown. Maps turned dangerous terrain into navigable paths.", firstUsed: "First known map: c. 600 BCE", sprite: "/sprites/maps.png" },
-  { id: "clocks", label: "Clocks", description: "Clocks allowed us to impose strict order on the formless flow of time.", firstUsed: "Mechanical clocks: c. 1300s", sprite: "/sprites/clock.png" },
-  { id: "measurements", label: "Measurements", description: "To measure is to control. Standardised units turned the world into something manageable.", firstUsed: "Metric system: c. 1800s", sprite: "/sprites/measurements.png" },
-  { id: "statistics", label: "Statistics", description: "With advancements in science, we could now use data to find patterns in the unpredictable.", firstUsed: "Modern statistics: c. 1900s", sprite: "/sprites/statistics.png" },
-]
+    { id: "astrology", label: "Astrology", description: "Humanity's earliest attempt to solve uncertainty, by predicting fate from the stars.", firstUsed: "Developed: c. 3000 BCE", sprite: "/sprites/astrology.png" },
+    { id: "receipts", label: "Receipts", description: "Physical trails turned the uncertainty of memory into hard evidence.", firstUsed: "Early receipts: c. 2050 BCE", sprite: "/sprites/receipts.png" },
+    { id: "contracts", label: "Contracts", description: "By binding the future with words, contracts attempted to eliminate uncertainty from human agreements.", firstUsed: "Contracts: c. 1750 BCE", sprite: "/sprites/contracts.png" },
+    { id: "maps", label: "Maps", description: "We began charting the unknown. Maps turned dangerous terrain into navigable paths.", firstUsed: "First known map: c. 600 BCE", sprite: "/sprites/maps.png" },
+    { id: "clocks", label: "Clocks", description: "Clocks allowed us to impose strict order on the formless flow of time.", firstUsed: "Mechanical clocks: c. 1300s", sprite: "/sprites/clock.png" },
+    { id: "measurements", label: "Measurements", description: "To measure is to control. Standardised units turned the world into something manageable.", firstUsed: "Metric system: c. 1800s", sprite: "/sprites/measurements.png" },
+    { id: "statistics", label: "Statistics", description: "With advancements in science, we could now use data to find patterns in the unpredictable.", firstUsed: "Modern statistics: c. 1900s", sprite: "/sprites/statistics.png" },
+  ]
 
 const TOOL_CONFIG = TOOL_DEFINITIONS.map((def, i) => {
   const slot = assignedSlots[i]
@@ -344,6 +343,8 @@ export default function ToolsPage({ visibleKey }: { visibleKey?: number }) {
   // Keyboard
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      if (document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.tagName === 'INPUT') return
       if (["ArrowLeft", "ArrowRight", "Space", " "].includes(e.key)) {
         e.preventDefault()
         keysRef.current.add(e.key === " " ? "Space" : e.key)
@@ -393,11 +394,11 @@ export default function ToolsPage({ visibleKey }: { visibleKey?: number }) {
       if (s.bubbleFading && s.bubbleOpacity > 0) s.bubbleOpacity = Math.max(0, s.bubbleOpacity - dt * 2.5)
       if (s.celebrationBubbleFading && s.celebrationBubbleOpacity > 0) s.celebrationBubbleOpacity = Math.max(0, s.celebrationBubbleOpacity - dt * 2.5)
       if (s.allCollected && s.celebrationBubbleOpacity > 0 && !s.celebrationBubbleFading) {
-  s.celebrationBubbleTimer += dt
-  if (s.celebrationBubbleTimer >= 5) {
-    s.celebrationBubbleFading = true
-  }
-}
+        s.celebrationBubbleTimer += dt
+        if (s.celebrationBubbleTimer >= 5) {
+          s.celebrationBubbleFading = true
+        }
+      }
 
       if (keysRef.current.has("ArrowRight")) { s.mitoX += MITO_SPEED * dt; s.facingRight = true }
       if (keysRef.current.has("ArrowLeft")) { s.mitoX -= MITO_SPEED * dt; s.facingRight = false }
@@ -463,13 +464,13 @@ export default function ToolsPage({ visibleKey }: { visibleKey?: number }) {
           notifTimerRef.current = setTimeout(() => setNotification(null), 2200)
           if (isFirst) setShowHoverHint(true)
           if (s.collected.size === TOOL_CONFIG.length) {
-  s.allCollected = true
-  s.bubbleFading = true
-  s.celebrationBubbleOpacity = 1
-  s.celebrationBubbleTimer = 0
-  s.celebrationBubbleFading = false
-  setTimeout(() => setShowAct2Text(true), 1800)
-}
+            s.allCollected = true
+            s.bubbleFading = true
+            s.celebrationBubbleOpacity = 1
+            s.celebrationBubbleTimer = 0
+            s.celebrationBubbleFading = false
+            setTimeout(() => setShowAct2Text(true), 1800)
+          }
         }
       })
 
@@ -539,122 +540,122 @@ export default function ToolsPage({ visibleKey }: { visibleKey?: number }) {
   const ICON_SIZE = 34
 
   return (
-  <div style={{
-    width: "100%",
-    height: "100%",
-    background: css("--bg"),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    boxSizing: "border-box",
-    gap: css("--space-4"),
-    position: "relative",
-  }}>
-
-    {/* Intro text */}
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: css("--space-2"), width: "90%" }}>
-      <p style={{
-        fontFamily: css("--sans"),
-        fontSize: css("--size-body"),
-        fontWeight: 300,
-        color: css("--ink"),
-        lineHeight: css("--lh-body"),
-        letterSpacing: "0.01em",
-        textAlign: "center",
-        margin: 0,
-      }}>
-        Humans have always tried to eliminate uncertainty.
-      </p>
-      <p style={{
-        fontFamily: css("--mono"),
-        fontSize: css("--size-caption"),
-        fontWeight: 400,
-        color: css("--mid"),
-        letterSpacing: "0.08em",
-        textAlign: "center",
-        margin: 0,
-      }}>
-        Use the on-screen buttons or arrow keys to control Mito.
-      </p>
-    </div>
-
-    {/* Game canvas + controls */}
     <div style={{
-      width: "80%",
+      width: "100%",
+      height: "100%",
+      background: css("--bg"),
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: css("--space-3"),
+      justifyContent: "center",
+      overflow: "hidden",
+      boxSizing: "border-box",
+      gap: css("--space-4"),
+      position: "relative",
     }}>
-      <div
-        ref={containerRef}
-        style={{
-          width: "100%",
-          position: "relative",
-          border: css("--border"),
-          borderRadius: css("--radius"),
-          overflow: "hidden",
-          background: css("--bg"),
-        }}
-      >
-        {/* Top left instruction */}
-        <div style={{
-          position: "absolute",
-          top: css("--space-2"),
-          left: css("--space-3"),
+
+      {/* Intro text */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: css("--space-2"), width: "90%" }}>
+        <p style={{
+          fontFamily: css("--sans"),
+          fontSize: css("--size-body"),
+          fontWeight: 300,
+          color: css("--ink"),
+          lineHeight: css("--lh-body"),
+          letterSpacing: "0.01em",
+          textAlign: "center",
+          margin: 0,
+        }}>
+          Humans have always tried to eliminate uncertainty.
+        </p>
+        <p style={{
           fontFamily: css("--mono"),
           fontSize: css("--size-caption"),
           fontWeight: 400,
-          letterSpacing: "0.1em",
-          color: css("--ink"),
-          background: css("--bg"),
-          border: css("--border"),
-          borderRadius: css("--radius"),
-          padding: "4px 8px",
-          zIndex: 10,
-          pointerEvents: "none",
+          color: css("--mid"),
+          letterSpacing: "0.08em",
+          textAlign: "center",
+          margin: 0,
         }}>
-          Collect all the tools to continue.
-        </div>
+          Use the on-screen buttons or arrow keys to control Mito.
+        </p>
+      </div>
 
-        {/* Top right count + notification */}
-        <div style={{
-          position: "absolute",
-          top: css("--space-2"),
-          right: css("--space-3"),
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-          gap: 4,
-          zIndex: 10,
-          pointerEvents: "none",
-        }}>
-          <span style={{
+      {/* Game canvas + controls */}
+      <div style={{
+        width: "80%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: css("--space-3"),
+      }}>
+        <div
+          ref={containerRef}
+          style={{
+            width: "100%",
+            position: "relative",
+            border: css("--border"),
+            borderRadius: css("--radius"),
+            overflow: "hidden",
+            background: css("--bg"),
+          }}
+        >
+          {/* Top left instruction */}
+          <div style={{
+            position: "absolute",
+            top: css("--space-2"),
+            left: css("--space-3"),
             fontFamily: css("--mono"),
             fontSize: css("--size-caption"),
             fontWeight: 400,
-            letterSpacing: "0.15em",
-            color: css("--mid"),
+            letterSpacing: "0.1em",
+            color: css("--ink"),
+            background: css("--bg"),
+            border: css("--border"),
+            borderRadius: css("--radius"),
+            padding: "4px 8px",
+            zIndex: 10,
+            pointerEvents: "none",
           }}>
-            {collected.size} / {TOOL_CONFIG.length}
-          </span>
-          {notification && (
-            <span key={notification.key} style={{
+            Collect all the tools to continue.
+          </div>
+
+          {/* Top right count + notification */}
+          <div style={{
+            position: "absolute",
+            top: css("--space-2"),
+            right: css("--space-3"),
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: 4,
+            zIndex: 10,
+            pointerEvents: "none",
+          }}>
+            <span style={{
               fontFamily: css("--mono"),
               fontSize: css("--size-caption"),
               fontWeight: 400,
-              letterSpacing: "0.1em",
-              color: css("--red"),
-              animation: "notifFadeUp 2.2s ease forwards",
+              letterSpacing: "0.15em",
+              color: css("--mid"),
             }}>
-              Obtained {notification.label}
+              {collected.size} / {TOOL_CONFIG.length}
             </span>
-          )}
-        </div>
+            {notification && (
+              <span key={notification.key} style={{
+                fontFamily: css("--mono"),
+                fontSize: css("--size-caption"),
+                fontWeight: 400,
+                letterSpacing: "0.1em",
+                color: css("--red"),
+                animation: "notifFadeUp 2.2s ease forwards",
+              }}>
+                Obtained {notification.label}
+              </span>
+            )}
+          </div>
 
-        <style>{`
+          <style>{`
           @keyframes notifFadeUp {
             0%   { opacity: 0; transform: translateY(6px); }
             15%  { opacity: 1; transform: translateY(0); }
@@ -663,121 +664,121 @@ export default function ToolsPage({ visibleKey }: { visibleKey?: number }) {
           }
         `}</style>
 
-        <canvas ref={canvasRef} style={{ display: "block" }} />
-      </div>
-
-      {/* Controls row */}
-      <div style={{
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "space-between",
-        width: "100%",
-        gap: css("--space-4"),
-      }}>
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <PixelControlButton onMouseDown={() => pressKey("ArrowLeft")} onMouseUp={() => releaseKey("ArrowLeft")} onMouseLeave={() => releaseKey("ArrowLeft")} onTouchStart={() => pressKey("ArrowLeft")} onTouchEnd={() => releaseKey("ArrowLeft")}>←</PixelControlButton>
-          <PixelControlButton onMouseDown={() => pressKey("ArrowRight")} onMouseUp={() => releaseKey("ArrowRight")} onMouseLeave={() => releaseKey("ArrowRight")} onTouchStart={() => pressKey("ArrowRight")} onTouchEnd={() => releaseKey("ArrowRight")}>→</PixelControlButton>
-          <PixelControlButton wide onMouseDown={jump} onTouchStart={jump}>Jump</PixelControlButton>
+          <canvas ref={canvasRef} style={{ display: "block" }} />
         </div>
 
-        {/* Inventory */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10, marginLeft: "auto" }}>
-          <div style={{ display: "flex", gap: 5, position: "relative" }}>
-            {TOOL_CONFIG.map((tool) => {
-              const isCollected = collected.has(tool.id)
-              return (
-                <div
-                  key={tool.id}
-                  onMouseEnter={() => setHoveredTool(tool.id)}
-                  onMouseLeave={() => setHoveredTool(null)}
-                  style={{
-                    position: "relative",
-                    width: ICON_SIZE,
-                    height: ICON_SIZE,
-                    border: `1px solid ${isCollected ? css("--ink") : css("--mid")}`,
-                    borderRadius: css("--radius"),
-                    background: "transparent",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    transition: "border-color 0.2s ease",
-                    flexShrink: 0,
-                  }}
-                >
-                  {isCollected ? (
-                    <img src={tool.sprite} alt={tool.label} style={{ width: ICON_SIZE - 8, height: ICON_SIZE - 8, objectFit: "contain", imageRendering: "pixelated", display: "block" }} />
-                  ) : (
-                    <span style={{ fontFamily: css("--mono"), fontSize: css("--size-caption"), color: css("--mid") }}>?</span>
-                  )}
-
-                  {hoveredTool === tool.id && (
-                    <div style={{
-                      position: "absolute",
-                      bottom: ICON_SIZE + 8,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: 180,
-                      background: css("--bg"),
-                      border: css("--border"),
-                      borderRadius: css("--radius"),
-                      padding: "10px 12px",
-                      zIndex: 20,
-                      pointerEvents: "none",
-                    }}>
-                      <p style={{ fontFamily: css("--mono"), fontSize: 12, fontWeight: 400, letterSpacing: "0.15em", textTransform: "uppercase", color: css("--ink"), margin: "0 0 5px 0" }}>
-                        {isCollected ? tool.label : "???"}
-                      </p>
-                      {isCollected ? (
-                        <>
-                          <p style={{ fontFamily: css("--sans"), fontSize: 13, fontWeight: 300, color: css("--mid"), margin: "0 0 8px 0", lineHeight: 1.5 }}>{tool.description}</p>
-                          <p style={{ fontFamily: css("--mono"), fontSize: 8, fontWeight: 400, letterSpacing: "0.1em", color: css("--ink"), margin: 0, borderTop: `1px solid var(--mid)`, paddingTop: 6 }}>{tool.firstUsed}</p>
-                        </>
-                      ) : (
-                        <p style={{ fontFamily: css("--sans"), fontSize: 12, fontWeight: 300, color: css("--mid"), margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>Not yet collected.</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )
-            })}
+        {/* Controls row */}
+        <div style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          width: "100%",
+          gap: css("--space-4"),
+        }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <PixelControlButton onMouseDown={() => pressKey("ArrowLeft")} onMouseUp={() => releaseKey("ArrowLeft")} onMouseLeave={() => releaseKey("ArrowLeft")} onTouchStart={() => pressKey("ArrowLeft")} onTouchEnd={() => releaseKey("ArrowLeft")}>←</PixelControlButton>
+            <PixelControlButton onMouseDown={() => pressKey("ArrowRight")} onMouseUp={() => releaseKey("ArrowRight")} onMouseLeave={() => releaseKey("ArrowRight")} onTouchStart={() => pressKey("ArrowRight")} onTouchEnd={() => releaseKey("ArrowRight")}>→</PixelControlButton>
+            <PixelControlButton wide onMouseDown={jump} onTouchStart={jump}>Jump</PixelControlButton>
           </div>
 
-          <p style={{
-            fontFamily: css("--mono"),
-            fontSize: css("--size-caption"),
-            fontWeight: 400,
-            color: css("--mid"),
-            letterSpacing: "0.08em",
-            margin: 0,
-            opacity: showHoverHint ? 1 : 0,
-            transform: showHoverHint ? "translateY(0)" : "translateY(4px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-            pointerEvents: "none",
-          }}>
-            Hover over each tool to learn more.
-          </p>
+          {/* Inventory */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10, marginLeft: "auto" }}>
+            <div style={{ display: "flex", gap: 5, position: "relative" }}>
+              {TOOL_CONFIG.map((tool) => {
+                const isCollected = collected.has(tool.id)
+                return (
+                  <div
+                    key={tool.id}
+                    onMouseEnter={() => setHoveredTool(tool.id)}
+                    onMouseLeave={() => setHoveredTool(null)}
+                    style={{
+                      position: "relative",
+                      width: ICON_SIZE,
+                      height: ICON_SIZE,
+                      border: `1px solid ${isCollected ? css("--ink") : css("--mid")}`,
+                      borderRadius: css("--radius"),
+                      background: "transparent",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "border-color 0.2s ease",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {isCollected ? (
+                      <img src={tool.sprite} alt={tool.label} style={{ width: ICON_SIZE - 8, height: ICON_SIZE - 8, objectFit: "contain", imageRendering: "pixelated", display: "block" }} />
+                    ) : (
+                      <span style={{ fontFamily: css("--mono"), fontSize: css("--size-caption"), color: css("--mid") }}>?</span>
+                    )}
+
+                    {hoveredTool === tool.id && (
+                      <div style={{
+                        position: "absolute",
+                        bottom: ICON_SIZE + 8,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: 180,
+                        background: css("--bg"),
+                        border: css("--border"),
+                        borderRadius: css("--radius"),
+                        padding: "10px 12px",
+                        zIndex: 20,
+                        pointerEvents: "none",
+                      }}>
+                        <p style={{ fontFamily: css("--mono"), fontSize: 12, fontWeight: 400, letterSpacing: "0.15em", textTransform: "uppercase", color: css("--ink"), margin: "0 0 5px 0" }}>
+                          {isCollected ? tool.label : "???"}
+                        </p>
+                        {isCollected ? (
+                          <>
+                            <p style={{ fontFamily: css("--sans"), fontSize: 13, fontWeight: 300, color: css("--mid"), margin: "0 0 8px 0", lineHeight: 1.5 }}>{tool.description}</p>
+                            <p style={{ fontFamily: css("--mono"), fontSize: 8, fontWeight: 400, letterSpacing: "0.1em", color: css("--ink"), margin: 0, borderTop: `1px solid var(--mid)`, paddingTop: 6 }}>{tool.firstUsed}</p>
+                          </>
+                        ) : (
+                          <p style={{ fontFamily: css("--sans"), fontSize: 12, fontWeight: 300, color: css("--mid"), margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>Not yet collected.</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            <p style={{
+              fontFamily: css("--mono"),
+              fontSize: css("--size-caption"),
+              fontWeight: 400,
+              color: css("--mid"),
+              letterSpacing: "0.08em",
+              margin: 0,
+              opacity: showHoverHint ? 1 : 0,
+              transform: showHoverHint ? "translateY(0)" : "translateY(4px)",
+              transition: "opacity 0.6s ease, transform 0.6s ease",
+              pointerEvents: "none",
+            }}>
+              Hover over each tool to learn more.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    {/* Act 2 text */}
-    {showAct2Text && (
-      <p style={{
-        fontFamily: css("--sans"),
-        fontSize: css("--size-body"),
-        fontWeight: 300,
-        color: css("--ink"),
-        letterSpacing: "0.01em",
-        lineHeight: css("--lh-body"),
-        margin: 0,
-        textAlign: "center",
-        width: "90%",
-        opacity: 1,
-        transition: "opacity 0.75s ease",
-      }}>
-        These two new fields are what IDEAL is built on.
-      </p>
-    )}
-  </div>
-)
+      {/* Act 2 text */}
+      {showAct2Text && (
+        <p style={{
+          fontFamily: css("--sans"),
+          fontSize: css("--size-body"),
+          fontWeight: 300,
+          color: css("--ink"),
+          letterSpacing: "0.01em",
+          lineHeight: css("--lh-body"),
+          margin: 0,
+          textAlign: "center",
+          width: "90%",
+          opacity: 1,
+          transition: "opacity 0.75s ease",
+        }}>
+          These two new fields are what IDEAL is built on.
+        </p>
+      )}
+    </div>
+  )
 }

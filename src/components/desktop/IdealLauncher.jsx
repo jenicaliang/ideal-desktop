@@ -36,7 +36,7 @@ const GlitchOverlay = ({ onDone }) => {
   )
 }
 
-export default function IdealLauncher({ onAccept, onDecline, onRestoreWindow }) {
+export default function IdealLauncher({ onAccept, onRestoreWindow }) {
   const [phase, setPhase] = useState('waiting')
   const [showIcon, setShowIcon] = useState(false)
   const [showGlitch, setShowGlitch] = useState(false)

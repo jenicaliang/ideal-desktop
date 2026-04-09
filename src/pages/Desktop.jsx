@@ -18,7 +18,10 @@ import NeedsWindow from '../components/desktop/NeedsWindow'
 import ToolsWindow from '../components/desktop/ToolsWindow'
 import FolderWindow from '../components/desktop/FolderWindow'
 import WorldWindow from '../components/desktop/WorldWindow'
-import DevicesWindow from '../components/desktop/DevicesWindow' 
+import DevicesWindow from '../components/desktop/DevicesWindow'
+import GoalScorerWindow from '../components/desktop/GoalScorerWindow'
+import DirectiveNotification from '../components/desktop/DirectiveNotification'
+import TerminalWindow from '../components/desktop/TerminalWindow'
 
 export default function Desktop({
   isMonochrome,
@@ -52,8 +55,18 @@ export default function Desktop({
   const [worldResetKey, setWorldResetKey] = useState(0)
 
   const [showDevicesWindow, setShowDevicesWindow] = useState(false)
-const [devicesMinimized, setDevicesMinimized] = useState(false)
-const [devicesZ, setDevicesZ] = useState(510)
+  const [devicesMinimized, setDevicesMinimized] = useState(false)
+  const [devicesZ, setDevicesZ] = useState(510)
+
+  const [showGoalScorerWindow, setShowGoalScorerWindow] = useState(false)
+  const [goalScorerMinimized, setGoalScorerMinimized] = useState(false)
+  const [goalScorerZ, setGoalScorerZ] = useState(510)
+  const [goalScorerOpened, setGoalScorerOpened] = useState(false)
+
+  const [showDirective, setShowDirective] = useState(false)
+  const [showTerminalWindow, setShowTerminalWindow] = useState(false)
+  const [terminalMinimized, setTerminalMinimized] = useState(false)
+  const [terminalZ, setTerminalZ] = useState(510)
 
   const FOLDER_Z = 9999
   const IDEAL_MAX_Z = FOLDER_Z - 1
@@ -83,7 +96,7 @@ const [devicesZ, setDevicesZ] = useState(510)
   }, [])
 
   const handleIdealClose = useCallback(() => {
-  setTheme('teal')
+    setTheme('teal')
     setIdealClosed(true)
     setIdealVisible(false)
     setIdealMinimized(false)
@@ -106,11 +119,18 @@ const [devicesZ, setDevicesZ] = useState(510)
   }, [])
 
   const handleDownloadCatalog = useCallback(() => {
-  setInstalledApps(prev => prev.includes('devices') ? prev : [...prev, 'devices'])
-  setShowDevicesWindow(true)
-  setDevicesMinimized(false)
-  zCounter.current += 1
-  setDevicesZ(zCounter.current)
+    setInstalledApps(prev => prev.includes('devices') ? prev : [...prev, 'devices'])
+    setShowDevicesWindow(true)
+    setDevicesMinimized(false)
+    zCounter.current += 1
+    setDevicesZ(zCounter.current)
+  }, [])
+  const handleInstallGoalScorer = useCallback(() => {
+    setInstalledApps(prev => prev.includes('goalscorer') ? prev : [...prev, 'goalscorer'])
+  }, [])
+  const handleEndpointsMount = useCallback(() => {
+  setShowDirective(true)
+  setInstalledApps(prev => prev.includes('terminal') ? prev : [...prev, 'terminal'])
 }, [])
 
   const folderInstalledFiles = useMemo(
@@ -141,17 +161,17 @@ const [devicesZ, setDevicesZ] = useState(510)
               localStorage.removeItem('ideal_world_selections')
               localStorage.removeItem('ideal_world_values')
               localStorage.removeItem('ideal_world_fears')
-              localStorage.removeItem('ideal_completed_world')
               setWorldResetKey(k => k + 1)
             },
           }
           : null,
-          installedApps.includes('devices') ? {
-  id: 'devices',
-  label: 'PRODUCT_CATALOG',
-  type: '.exe',
-} : null,
-
+        installedApps.includes('devices') ? {
+          id: 'devices',
+          label: 'PRODUCT_CATALOG',
+          type: '.exe',
+        } : null,
+        installedApps.includes('goalscorer') ? { id: 'goalscorer', label: 'GOAL_SCORER', type: '.exe' } : null,
+        installedApps.includes('terminal') ? { id: 'terminal', label: 'IDEAL_TERMINAL', type: '.glb' } : null,
       ].filter(Boolean),
     [installedApps]
   )
@@ -173,19 +193,31 @@ const [devicesZ, setDevicesZ] = useState(510)
       zCounter.current += 1
       setWorldZ(zCounter.current)
     } else if (id === 'devices') {
-  setShowDevicesWindow(true)
-  setDevicesMinimized(false)
+      setShowDevicesWindow(true)
+      setDevicesMinimized(false)
+      zCounter.current += 1
+      setDevicesZ(zCounter.current)
+    } else if (id === 'goalscorer') {
+      setShowGoalScorerWindow(true)
+      setGoalScorerOpened(true)
+      setGoalScorerMinimized(false)
+      zCounter.current += 1
+      setGoalScorerZ(zCounter.current)
+    } else if (id === 'terminal') {
+  setShowTerminalWindow(true)
+  setTerminalMinimized(false)
   zCounter.current += 1
-  setDevicesZ(zCounter.current)
+  setTerminalZ(zCounter.current)
 }
   }, [])
+
 
   const ICON_SIZE = 'clamp(36px, 4vw, 64px)'
   const ICON_FONT = 'clamp(12px, 0.9vw, 18px)'
 
   const chromeColor = theme === 'red' ? '#b04a2f' : 'var(--teal-deep)'
-const chromeBorder = theme === 'red' ? 'var(--yellow)' : 'var(--teal-bright)'
-const chromeButtonColor = theme === 'red' ? '#f5f3ef' : 'var(--yellow)'
+  const chromeBorder = theme === 'red' ? 'var(--yellow)' : 'var(--teal-bright)'
+  const chromeButtonColor = theme === 'red' ? '#f5f3ef' : 'var(--yellow)'
 
   return (
     <div
@@ -267,7 +299,9 @@ const chromeButtonColor = theme === 'red' ? '#f5f3ef' : 'var(--yellow)'
           zCounter.current += 1
         }}
         devicesActive={devicesMinimized}
-onRestoreDevices={() => setDevicesMinimized(false)}
+        onRestoreDevices={() => setDevicesMinimized(false)}
+        goalScorerActive={goalScorerMinimized}
+        onRestoreGoalScorer={() => setGoalScorerMinimized(false)}
       />
 
       {showAbout && <AboutWindow onClose={onCloseAbout} />}
@@ -348,6 +382,7 @@ onRestoreDevices={() => setDevicesMinimized(false)}
           onReachUncertainty={handleReachUncertainty}
           isMinimized={idealMinimized}
           onDownloadCatalog={handleDownloadCatalog}
+          onEndpointsMount={handleEndpointsMount}
           zIndex={idealZ}
           onFocus={() => {
             zCounter.current += 1
@@ -355,8 +390,11 @@ onRestoreDevices={() => setDevicesMinimized(false)}
           }}
           onOpenFolder={handleOpenFolder}
           onThemeChange={() => setTheme('red')}
-chromeColor={chromeColor}
-chromeBorder={chromeBorder}
+          chromeColor={chromeColor}
+          chromeBorder={chromeBorder}
+          onGoalsMount={handleInstallGoalScorer}
+          onGoalScorerOpened={() => setGoalScorerOpened(true)}
+          goalScorerOpened={goalScorerOpened}
 
         />
       )}
@@ -374,8 +412,8 @@ chromeBorder={chromeBorder}
           zIndex={FOLDER_Z}
           isMinimized={folderMinimized || !folderVisible}
           chromeColor={chromeColor}
-chromeBorder={chromeBorder}
-chromeButtonColor={chromeButtonColor}
+          chromeBorder={chromeBorder}
+          chromeButtonColor={chromeButtonColor}
         />
       )}
 
@@ -422,15 +460,42 @@ chromeButtonColor={chromeButtonColor}
       )}
 
       {installedApps.includes('devices') && (
-  <DevicesWindow
-    onClose={() => setShowDevicesWindow(false)}
-    onFocus={() => { zCounter.current += 1; setDevicesZ(zCounter.current) }}
-    onMinimize={() => setDevicesMinimized(true)}
-    zIndex={devicesZ}
-    isMinimized={devicesMinimized || !showDevicesWindow}
+        <DevicesWindow
+          onClose={() => setShowDevicesWindow(false)}
+          onFocus={() => { zCounter.current += 1; setDevicesZ(zCounter.current) }}
+          onMinimize={() => setDevicesMinimized(true)}
+          zIndex={devicesZ}
+          isMinimized={devicesMinimized || !showDevicesWindow}
+        />
+      )}
+
+      {installedApps.includes('goalscorer') && (
+        <GoalScorerWindow
+          onClose={() => setShowGoalScorerWindow(false)}
+          onFocus={() => { zCounter.current += 1; setGoalScorerZ(zCounter.current) }}
+          onMinimize={() => setGoalScorerMinimized(true)}
+          onOpen={() => setGoalScorerOpened(true)}
+          zIndex={goalScorerZ}
+          isMinimized={goalScorerMinimized || !showGoalScorerWindow}
+          apiKey={import.meta.env.VITE_ANTHROPIC_KEY}
+        />
+      )}
+
+      {showDirective && (
+  <DirectiveNotification
+    onDismiss={() => setShowDirective(false)}
+    apiKey={import.meta.env.VITE_ANTHROPIC_KEY}
   />
 )}
-
+{installedApps.includes('terminal') && (
+  <TerminalWindow
+    onClose={() => setShowTerminalWindow(false)}
+    onFocus={() => { zCounter.current += 1; setTerminalZ(zCounter.current) }}
+    onMinimize={() => setTerminalMinimized(true)}
+    zIndex={terminalZ}
+    isMinimized={terminalMinimized || !showTerminalWindow}
+  />
+)}
 
       {idealClosed && (
         <div
