@@ -222,6 +222,7 @@ export default function Desktop({
     setIconContextMenu({ x: e.clientX, y: e.clientY })
   }, [])
 
+  
   const folderInstalledFiles = useMemo(() => [
     installedApps.includes('needs') ? { id: 'needs', label: 'MASLOWS_NEEDS', type: '.exe', onReset: () => setNeedsResetKey(k => k + 1) } : null,
     installedApps.includes('tools') ? { id: 'tools', label: 'PRECEDENTS', type: '.exe', onReset: () => setToolsResetKey(k => k + 1) } : null,
