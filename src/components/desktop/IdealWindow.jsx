@@ -13,6 +13,7 @@ import SampleDaysPage from '../ideal/SampleDaysPage'
 import CTAPage from '../ideal/CTAPage'
 import RefusePage from '../ideal/RefusePage'
 
+
 export default function IdealWindow({
   onMinimize, onClose, onReachUncertainty, isMinimized, zIndex, onFocus,
   onOpenFolder, onDownloadCatalog, onThemeChange, chromeColor, chromeBorder,
@@ -210,7 +211,7 @@ export default function IdealWindow({
           {phase === 'cta' && (
             <CTAPage
               onProceed={() => setPhase('join')}
-              onRefuse={() => setPhase('refuse')}
+              onRefuse={onRefuse}
             />
           )}
 
