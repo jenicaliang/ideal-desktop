@@ -217,7 +217,7 @@ function SettingsPhase({ enableAudio, onToggleAudio, enableMonochrome, onToggleM
             letterSpacing: '0.04em',
             lineHeight: 1,
           }}>
-            Display Settings
+            Your Desktop Display Settings
           </div>
         </div>
 
