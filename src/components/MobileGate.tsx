@@ -1,5 +1,3 @@
-// src/components/MobileGate.tsx
-
 import { useEffect, useState } from "react";
 
 const MIN_WIDTH = 1024;
@@ -23,7 +21,7 @@ export default function MobileGate({ children }: { children: React.ReactNode }) 
     <div style={{
       position: "fixed",
       inset: 0,
-      background: "var(--bg, #f5f3ef)",
+      background: "#1a1a2e",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -34,67 +32,73 @@ export default function MobileGate({ children }: { children: React.ReactNode }) 
       textAlign: "center",
     }}>
       <div style={{
-        maxWidth: 420,
+        maxWidth: 360,
         display: "flex",
         flexDirection: "column",
-        gap: "1.5rem",
         alignItems: "center",
+        gap: "1.25rem",
       }}>
 
-        {/* Mito pixel square */}
-        <div style={{
-          width: 48,
-          height: 48,
-          background: "var(--ink, #1e1e1e)",
-          borderRadius: 8,
-          flexShrink: 0,
-        }} />
+        {/* Monitor icon — pure CSS */}
+        <div style={{ position: "relative", width: 64, height: 52, marginBottom: 8 }}>
+          <div style={{
+            width: 64, height: 40,
+            border: "2px solid #00FFE0",
+            borderRadius: 4,
+            boxSizing: "border-box",
+          }} />
+          <div style={{
+            position: "absolute",
+            bottom: 8, left: "50%",
+            transform: "translateX(-50%)",
+            width: 2, height: 10,
+            background: "#00FFE0",
+          }} />
+          <div style={{
+            position: "absolute",
+            bottom: 0, left: "50%",
+            transform: "translateX(-50%)",
+            width: 24, height: 2,
+            background: "#00FFE0",
+          }} />
+        </div>
 
         <p style={{
-          fontFamily: "'Reddit Mono', monospace",
-          fontSize: 11,
-          letterSpacing: "0.12em",
+          fontSize: 10,
+          letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "var(--mid, #9a9690)",
+          color: "#00FFE0",
           margin: 0,
         }}>
-          IDEAL Systems — Environment Check
+          Unsupported Device
         </p>
 
         <p style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: 22,
-          fontWeight: 400,
-          color: "var(--ink, #1e1e1e)",
-          lineHeight: 1.4,
-          margin: 0,
-        }}>
-          Your screen is too small to be optimized.
-        </p>
-
-        <p style={{
-          fontFamily: "'DM Sans', sans-serif",
           fontSize: 15,
-          color: "var(--mid, #9a9690)",
+          color: "#e8e6e1",
           lineHeight: 1.6,
           margin: 0,
+          fontFamily: "'DM Sans', sans-serif",
+          fontWeight: 400,
         }}>
-          IDEAL requires a desktop environment to properly assess, infer, and improve your life. Please open this on a laptop or desktop to continue.
+          This desktop environment wasn't designed for a screen this size. Open it on a laptop or desktop to continue.
         </p>
 
         <div style={{
+          marginTop: "0.5rem",
+          padding: "0.75rem 1rem",
+          border: "1px solid #1a4a5c",
+          borderRadius: 4,
           width: "100%",
-          borderTop: "1px solid var(--mid, #9a9690)",
-          paddingTop: "1.25rem",
+          boxSizing: "border-box",
         }}>
           <p style={{
-            fontFamily: "'Reddit Mono', monospace",
-            fontSize: 11,
-            color: "var(--mid, #9a9690)",
-            letterSpacing: "0.08em",
+            fontSize: 10,
+            color: "#4a7a8a",
+            letterSpacing: "0.1em",
             margin: 0,
           }}>
-            Minimum supported: 1024 × 600
+            MIN RESOLUTION — 1024 × 600
           </p>
         </div>
 
