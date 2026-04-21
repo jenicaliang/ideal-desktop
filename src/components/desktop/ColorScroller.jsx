@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 
 const playDing = () => {
   const ctx = new (window.AudioContext || window.webkitAudioContext)()
@@ -187,7 +187,10 @@ export default function ColorScroller() {
   const lastWasNewRef = useRef(false)
   const scrollAccum = useRef(0)
   const lastScroll = useRef(0)
+  const containerRef = useRef(null)
   const COOLDOWN = 1000
+
+  const handleWheelRef = useRef(null)
 
   const appendCard = useCallback((index) => {
     const card = generateCard(index, lastWasNewRef.current, unlockedRef.current)
@@ -240,6 +243,18 @@ export default function ColorScroller() {
     }
   }
 
+  useEffect(() => {
+    handleWheelRef.current = handleWheel
+  })
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const handler = (e) => handleWheelRef.current(e)
+    el.addEventListener('wheel', handler, { passive: false })
+    return () => el.removeEventListener('wheel', handler)
+  }, [])
+
   return (
     <div style={{
       position: 'absolute',
@@ -249,7 +264,7 @@ export default function ColorScroller() {
       userSelect: 'none',
     }}>
       <div
-        onWheel={handleWheel}
+        ref={containerRef}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
         style={{
@@ -261,7 +276,7 @@ export default function ColorScroller() {
           overflow: 'hidden',
           position: 'relative',
           cursor: hovering
-            ? `url('/socialscroll.png') 32 32, auto`
+            ? `url('/socialscroll.png') 0 0, auto`
             : 'default',
         }}
       >
