@@ -13,6 +13,7 @@ function App() {
 
   return (
     <MobileGate>
+      <Analytics />
       {!booted ? (
         <BootScreen
           onComplete={() => setBooted(true)}
