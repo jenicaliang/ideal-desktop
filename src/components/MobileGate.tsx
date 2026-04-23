@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const MIN_WIDTH = 1024;
 const MIN_HEIGHT = 600;
-const SHARE_URL = "https://ideal-desktop.vercel.app";
+const SHARE_URL = "https://myideal.me";
 
 export default function MobileGate({ children }: { children: React.ReactNode }) {
   const [blocked, setBlocked] = useState(false);
